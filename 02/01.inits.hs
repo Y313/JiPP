@@ -1,3 +1,7 @@
+myReverse l = myReverse [] l where
+	myReverse a [] = a
+	myReverse a (h:t) = myReverse (h:a) t
+
 myInits l = myInitsHelper l []
 
 myInitsHelper [] a = []:a
