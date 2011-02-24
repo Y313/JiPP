@@ -4,4 +4,4 @@ power n = power n 1 where
 
 fib n = fib n 0 1 where
 	fib 0 f1 f2 = f1
-	fib a f1 f2 = fib (a-1) f2 (f1 + f2)
+	fib (a+1) f1 f2 = fib a f2 (f1 + f2)
