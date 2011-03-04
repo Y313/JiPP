@@ -1,6 +1,6 @@
 import Data.Char
 readInts:: String -> [Int]
-readInts s = map read $ filter (all isDigit) (words s)
+readInts s = [read w | w <- words s, all isDigit w]
 
 readInts2:: String -> Either String [Int]
 readInts2 s = let l = filter (not . all isDigit) (words s)
