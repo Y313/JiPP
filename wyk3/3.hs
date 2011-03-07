@@ -34,6 +34,5 @@ toString i
 convert :: String -> String
 convert s = str where
 	(Right str) = tryParse s `catchError` printError
-
-tryParse s = do {n <- parseHex s; toString n}
-printError (Err loc msg) = return $ concat ["At index ", show loc,":", msg]
+	tryParse s = do {n <- parseHex s; toString n}
+	printError (Err loc msg) = return $ concat ["At index ", show loc,":", msg]
