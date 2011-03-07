@@ -1,8 +1,16 @@
 sequence' :: Monad m => [m a] -> m [a]
-sequence' = foldr (\x acc -> x >>= (\x1 -> acc >>= (\acc1 -> return (x1:acc1)))) (return []) 
+sequence' [] = return []
+sequence' (x:xs) = do
+		l <- x
+		ls <- sequence' xs
+		return (l:ls)
 
 mapM' :: Monad m => (a -> m b) -> [a] -> m [b]
-mapM' f = foldr (\x acc -> f x >>= (\x1 -> acc >>= (\acc1 -> return (x1:acc1)))) (return [])
+mapM' f [] = return []
+mapM' f (x:xs) = do
+		l <- (f x)
+		ls <- mapM' f xs
+		return (l:ls)
 
 forM' :: Monad m => [a] -> (a -> m b) -> m [b]
 forM' l f = mapM' f l
