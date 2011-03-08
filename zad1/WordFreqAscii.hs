@@ -3,6 +3,9 @@ import List
 import System (getArgs, getProgName)
 import System.IO
 
+min_length = 2
+max_words = 10
+
 main :: IO ()
 main = do
 	args <- getArgs
@@ -12,22 +15,22 @@ main = do
 		n -> usage
 
 
--- produce raport about 10 most often words in file
+-- produce raport about max_words most often words in file
 wordStat :: String -> IO ()
 wordStat file = do
 	fileContent <- readFile file
 	mapM_ (\(c,f) -> putStrLn $ f ++ ' ':(show c)) $ calculateWordStat fileContent
 
--- return 10 most often ASCII words in string with counts
+-- return max_words most often ASCII words in string with counts
 calculateWordStat :: String -> [(Integer, String)]
-calculateWordStat text = topK 10 $ map swap $ countObjects getWords where
-	getWords = filter (\w -> 2 < (length w) && (all isAscii w)) $ words text
+calculateWordStat text = topK max_words $ map swap $ countObjects getWords where
+	getWords = filter (\w -> min_length < (length w) && (all isAscii w)) $ words text
 	swap (a,b) = (b,a)
 
 -- return objects with number of occurrences in array
 countObjects :: Ord a => [a] -> [(a,Integer)]
-countObjects words =  toList $ foldl counterUp (fromList []) words where
-	counterUp d w = Dict.insert w (succ (lookupOr0 w d)) d
+countObjects words =  toList $ foldl increaseCounter (fromList []) words where
+	increaseCounter d w = Dict.insert w (succ (lookupOr0 w d)) d
 	lookupOr0 k d = defaultIfNothing 0 $ Dict.lookup k d
 	defaultIfNothing _ (Just a) = a
 	defaultIfNothing a Nothing = a
